@@ -11,11 +11,11 @@
             @click="toggleMenu"
             class="px-3 h-9 text-[#333333] focus:outline-none"
           >
-            <Icon name="mdi:menu" size="15" class="ml-1" />
+            <Icon name="mdi:menu" size="15" />
           </button>
-          <div class="max-w-[700px] w-full md:block hidden">
+          <div class="max-w-[230px] w-full mr-10 md:block hidden">
             <div
-              class="flex items-center border-2 bg-[#fff] border-[#333333] rounded-md w-full"
+              class="flex items-center border-2 bg-[#fff] border-[#FF4646] rounded-md w-full"
             >
               <input
                 v-model="searchItem"
@@ -31,12 +31,14 @@
               />
 
               <button
-                class="flex items-center h-[100%] p-1.5 px-2 bg-[#FF4646]"
+                class="flex items-center h-[100%] p-1.5 px-3 bg-[#FF4646]"
               >
                 <Icon name="ph:magnifying-glass" size="15" color="#fff" />
               </button>
             </div>
           </div>
+          <Icon name=":D" size="15" color="" class="mr-2" />
+          <h1 class="font-bold">Nettikauppa</h1>
         </div>
         <ul class="flex items-center">
           <li
@@ -60,13 +62,13 @@
             >
               <div v-if="true">
                 <div>
-                  <NuxtLink to="/login"> Login </NuxtLink>
+                  <NuxtLink to="/login"> Login</NuxtLink>
                 </div>
               </div>
               <div>
                 <ul>
-                  <li @click="navigateTo('/1')" v-if="true">2</li>
-                  <li @click="navigateTo('/2')" v-if="true">3</li>
+                  <li @click="navigateTo('#')" v-if="true">2</li>
+                  <li @click="navigateTo('#')" v-if="true">3</li>
                 </ul>
               </div>
             </div>
@@ -74,6 +76,7 @@
         </ul>
       </div>
     </div>
+    <!--  -->
   </div>
 </template>
 
