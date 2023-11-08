@@ -75,5 +75,8 @@
 </template>
 
 <script setup>
+import { useUserStore } from '~/stores/user';
+const userStore = useUserStore()
+
 let isAccountMenu = ref(false)
 </script>
