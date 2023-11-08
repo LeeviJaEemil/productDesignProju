@@ -79,7 +79,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { useUserStore } from "~/stores/user";
 let isAccountMenu = ref(false);
 let isSearching = ref(true);
 let searchItem = ref("");
+const userStore = useUserStore();
 </script>
