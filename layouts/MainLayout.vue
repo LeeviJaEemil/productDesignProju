@@ -2,11 +2,9 @@
   <div id="MainLayout" class="">
     <div id="TopMenu" class="w-full border-b md:block hidden">
       <div
-        class="flex justify-between items-centre text-xs font-light h-9 bg-[#FA7070] max-w-[1200px] mx-auto"
+        class="flex justify-between items-centre text-xs font-light h-9 bg-[#FA7070] mx-auto"
       >
-        <!-- Hampurilaisvalikko ja hakukenttä -->
         <div class="flex items-center">
-          <!-- Hampurilaisvalikko, toteuta toiminnallisuus JavaScriptin avulla -->
           <button
             @click="toggleMenu"
             class="px-3 h-9 text-[#333333] focus:outline-none"
@@ -21,7 +19,7 @@
                 v-model="searchItem"
                 type="search"
                 class="fw-full placeholder-gray-400 text-sm pl-3 focus:outline-none"
-                placeholder="Hae..."
+                placeholder="Search..."
               />
               <Icon
                 v-if="isSearching"
@@ -37,8 +35,8 @@
               </button>
             </div>
           </div>
-          <Icon name=":D" size="15" color="" class="mr-2" />
-          <h1 class="font-bold">Nettikauppa</h1>
+          <img width="30" src="tonttu.png" class="mr-2" />
+          <h1 class="font-bold">Tontun</h1>
         </div>
         <ul class="flex items-center">
           <li
@@ -77,6 +75,7 @@
       </div>
     </div>
     <!--  -->
+    <img src="/tonttu.png" />
   </div>
 </template>
 
