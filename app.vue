@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="bg-[#FA7070]">
     <NuxtPage />
+    jees
   </div>
 </template>

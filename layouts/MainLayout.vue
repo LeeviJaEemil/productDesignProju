@@ -1,82 +1,87 @@
 <template>
-    <div id="MainLayout" class="">
-        <div
-            id="TopMenu"
-            class="w-full border-b md:block hidden"
-        >
-            <ul
-                class="
-                relative
-                flex
-                items-centre
-                justify-end
-                text-xs
-                text-[#33333]
-                font-light
-                h-9
-                bg-[#fafafafa]
-                max-w-[1200px]
-                "
-            >   
-                <li class="relative flex items-center border-r border-r-black-400 px-3 hover:text-[#FF4646] cursor-pointer">
-                    1
-                </li>
-                <li class="relative flex items-center border-r border-r-black-400 px-3 hover:text-[#FF4646] cursor-pointer">
-                    2
-                </li>
-                <li class="relative flex items-center border-r border-r-black-400 px-3 hover:text-[#FF4646] cursor-pointer">
-                    3
-                </li>
-                <li 
-                    class="relative flex items-center border-r border-r-black-400 px-3 hover:text-[#FF4646] cursor-pointer"
-                    :class="isAccountMenu ? 'bg-white border z-40' : border"
-                >
-                    Cart
-                    <Icon name="ph:shopping-cart-simple-light" size="15" class="ml-1"/>
-                </li>
-                
-                <li
-                    @mouseenter="isAccountMenu = true"
-                    @mouseleave="isAccountMenu = false" 
-                    class="relative flex items-center px-2.5 hover:text-[#FF4646] h-full cursor-pointer"
-                    :class="isAccountMenu ? 'bg-white border z-40' : border"
-                >
-                    Account
-                    <Icon name="ph:user-thin" size="17" class="ml-1"/>
-                    <Icon name="mdi:chevron-down" size="17"/>
-                    <div
-                        id="AccountMenu"
-                        v-if="isAccountMenu"
-                        class="absolute w-[220px] text-[#333333] z-40 top-[50px]"
-                    >
-                        <div v-if="true">
-                            <div class="flex items-center gap-1 px-3 mb-3">
-                                <NuxtLink
-                                    to="/auth"
-                                    >
-                                    Login
-                                </NuxtLink>
-                            </div>
-                        </div>
-                        <div class="border-b">
-                        <ul>
-                            <li
-                                @click="navigateTo('/1')"
-                            >
-                                2
-                            </li>   
-                        </ul>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+  <div id="MainLayout" class="">
+    <div id="TopMenu" class="w-full border-b md:block hidden">
+      <div
+        class="flex justify-between items-centre text-xs font-light h-9 bg-[#FA7070] max-w-[1200px] mx-auto"
+      >
+        <!-- Hampurilaisvalikko ja hakukenttä -->
+        <div class="flex items-center">
+          <!-- Hampurilaisvalikko, toteuta toiminnallisuus JavaScriptin avulla -->
+          <button
+            @click="toggleMenu"
+            class="px-3 h-9 text-[#333333] focus:outline-none"
+          >
+            <Icon name="mdi:menu" size="15" class="ml-1" />
+          </button>
+          <div class="max-w-[700px] w-full md:block hidden">
+            <div
+              class="flex items-center border-2 bg-[#fff] border-[#333333] rounded-md w-full"
+            >
+              <input
+                v-model="searchItem"
+                type="search"
+                class="fw-full placeholder-gray-400 text-sm pl-3 focus:outline-none"
+                placeholder="Hae..."
+              />
+              <Icon
+                v-if="isSearching"
+                name="eos-icons:loading"
+                size="15"
+                class="mr-2"
+              />
+
+              <button
+                class="flex items-center h-[100%] p-1.5 px-2 bg-[#FF4646]"
+              >
+                <Icon name="ph:magnifying-glass" size="15" color="#fff" />
+              </button>
+            </div>
+          </div>
         </div>
+        <ul class="flex items-center">
+          <li
+            class="border-r border-r-black-400 px-3 hover:text-[#F2FFE9] cursor-pointer"
+          >
+            Cart
+            <Icon name="ph:shopping-cart-simple-light" size="15" class="ml-1" />
+          </li>
+          <li
+            @mouseenter="isAccountMenu = true"
+            @mouseleave="isAccountMenu = false"
+            class="relative flex items-center px-2.5 hover:text-[#F2FFE9] h-full cursor-pointer"
+          >
+            Account
+            <Icon name="ph:user-thin" size="17" class="ml-1" />
+            <Icon name="mdi:chevron-down" size="17" />
+            <div
+              id="AccountMenu"
+              v-if="isAccountMenu"
+              class="absolute top-[38px] text-[#333333]"
+            >
+              <div v-if="true">
+                <div>
+                  <NuxtLink to="/login"> Login </NuxtLink>
+                </div>
+              </div>
+              <div>
+                <ul>
+                  <li @click="navigateTo('/1')" v-if="true">2</li>
+                  <li @click="navigateTo('/2')" v-if="true">3</li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-import { useUserStore } from '~/stores/user';
-const userStore = useUserStore()
-
-let isAccountMenu = ref(false)
+import { ref } from "vue";
+import { useUserStore } from "~/stores/user";
+let isAccountMenu = ref(false);
+let isSearching = ref(true);
+let searchItem = ref("");
+const userStore = useUserStore();
 </script>
