@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-[#FA7070]">
+  <div>
     <NuxtPage />
-    jees
+    <Footer />
   </div>
 </template>
