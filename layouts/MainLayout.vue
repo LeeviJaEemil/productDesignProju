@@ -1,7 +1,7 @@
 <template>
   <div id="MainLayout" class="w-full border-b md:block hidden">
     <div
-      class="flex justify-between items-centre text-xs font-light h-9 bg-[#FA7070] mx-auto"
+      class="flex justify-between items-centre text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
     >
       <div class="flex items-center">
         <button
@@ -39,8 +39,10 @@
         <li
           class="border-r border-r-black-400 px-3 hover:text-[#F2FFE9] cursor-pointer"
         >
-          Cart
-          <Icon name="ph:shopping-cart-simple-light" size="15" class="ml-1" />
+          
+          <NuxtLink to="/shoppingcart" class="flex items-center">
+            <Icon name="ph:shopping-cart-simple-light" size="15" class="ml-1" />
+          </NuxtLink>
         </li>
         <li
           @mouseenter="isAccountMenu = true"
