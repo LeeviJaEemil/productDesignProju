@@ -5,7 +5,6 @@
   >
     <div
       class="flex justify-between items-centre text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
-      class="flex justify-between items-centre text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
     >
       <div class="flex items-center">
         <button
