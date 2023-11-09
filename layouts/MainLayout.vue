@@ -1,7 +1,10 @@
 <template>
-  <div id="MainLayout" class="w-full border-b md:block hidden">
+  <div
+    id="MainLayout"
+    class="w-full border-b- border-[#557C55] md:block hidden"
+  >
     <div
-      class="flex justify-between items-centre text-xs font-light h-9 bg-[#FA7070] mx-auto"
+      class="flex justify-between items-centre text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
     >
       <div class="flex items-center">
         <button
@@ -12,12 +15,12 @@
         </button>
         <div class="max-w-[230px] w-full mr-10 md:block hidden">
           <div
-            class="flex items-center border-2 bg-[#fff] border-[#FF4646] rounded-md"
+            class="flex items-center border-2 bg-[#A6CF98] border-[#557C55] rounded-md"
           >
             <input
               v-model="searchItem"
               type="search"
-              class="fw-full placeholder-gray-400 text-sm pl-3 focus:outline-none"
+              class="fw-full placeholder-[#557C55] bg-[#A6CF98] text-sm pl-3 focus:outline-none"
               placeholder="Search..."
             />
             <Icon
@@ -27,7 +30,7 @@
               class="mr-2"
             />
 
-            <button class="flex items-center h-[100%] p-1.5 px-3 bg-[#FF4646]">
+            <button class="flex items-center h-[100%] p-1.5 px-3 bg-[#557C55]">
               <Icon name="ph:magnifying-glass" size="15" color="#fff" />
             </button>
           </div>
@@ -57,7 +60,7 @@
           >
             <div v-if="true">
               <div>
-                <NuxtLink to="/login"> Login</NuxtLink>
+                <NuxtLink to="/auth"> Login</NuxtLink>
               </div>
             </div>
             <div>
