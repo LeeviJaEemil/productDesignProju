@@ -39,7 +39,7 @@
             <div v-if="false" class="p-1">
               <nuxt-link
                 to="'/item/1'"
-                class="flex items-cener justify-between w-full cursor-pointer hover:bg-gray-100"
+                class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100"
               >
                 <div class="flex items-center">
                   <img
