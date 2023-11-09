@@ -1,7 +1,7 @@
 <template>
   <div
     id="MainLayout"
-    class="w-full border-b- border-[#557C55] md:block hidden"
+    class="w-full border-b-2 border-[#557C55] md:block hidden"
   >
     <div
       class="flex justify-between items-centre text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
@@ -40,7 +40,7 @@
       </div>
       <ul class="flex items-center">
         <li
-          class="border-r border-r-black-400 px-3 hover:text-[#F2FFE9] cursor-pointer"
+          class="border-r border-r-black-400 px-3 hover:text-[#557C55] cursor-pointer"
         >
           Cart
           <Icon name="ph:shopping-cart-simple-light" size="15" class="ml-1" />
@@ -48,7 +48,7 @@
         <li
           @mouseenter="isAccountMenu = true"
           @mouseleave="isAccountMenu = false"
-          class="relative flex items-center px-2.5 hover:text-[#F2FFE9] h-full cursor-pointer"
+          class="relative flex items-center px-2.5 hover:text-[#557C55] h-full cursor-pointer"
         >
           Account
           <Icon name="ph:user-thin" size="17" class="ml-1" />
