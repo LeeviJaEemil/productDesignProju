@@ -116,7 +116,6 @@
 import { ref } from "vue";
 import { useUserStore } from "~/stores/user";
 let isAccountMenu = ref(false);
-let isCartHover = ref(false);
 let isSearching = ref(true);
 let searchItem = ref("");
 const userStore = useUserStore();
