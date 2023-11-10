@@ -87,29 +87,26 @@
             </div>
           </nuxt-link>
         </li>
-
         <li
           @mouseenter="isAccountMenu = true"
           @mouseleave="isAccountMenu = false"
-          class="relative flex items-center px-1 hover:text-[#557C55] h-full cursor-pointer"
+          class="h-[30px] relative flex items-center px-1 hover:text-[#557C55] cursor-pointer"
         >
-          Account
+          <h1>Account</h1>
           <Icon name="ph:user-thin" size="17" class="ml-1" />
           <Icon name="mdi:chevron-down" size="17" />
           <div
             id="AccountMenu"
             v-if="isAccountMenu"
-            class="absolute top-[38px] text-[#333333]"
+            class="absolute top-[30px] text-[#333333]"
           >
-            <div v-if="true">
-              <div>
-                <NuxtLink to="/auth"> Login</NuxtLink>
-              </div>
+            <div class="bg-white">
+              <NuxtLink to="/auth"> Login</NuxtLink>
             </div>
             <div>
               <ul>
-                <li @click="navigateTo('#')" v-if="true">2</li>
-                <li @click="navigateTo('#')" v-if="true">3</li>
+                <!-- <li @click="navigateTo('#')" v-if="true">2</li>
+                <li @click="navigateTo('#')" v-if="true">3</li> -->
               </ul>
             </div>
           </div>
