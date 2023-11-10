@@ -1,7 +1,7 @@
 <template>
-    <MainLayout>
-        <div id="CartPage" class="bg-[#A6CF98] mt-4 max-w-[1200px] mx-auto px-2">
-            <div v-if="true" class="h-[500px] flex items-center justify-center">
+    <MainLayout/>
+        <div id="CartPage" class="bg-[#A6CF98] mx-auto px-2">
+            <div v-if="true" class=" flex items-center justify-center">
                 <div class="pt-20">
                     
                     <img 
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-    </MainLayout>
+    
 </template>
 
 <script setup>
