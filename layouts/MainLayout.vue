@@ -4,16 +4,26 @@
     class="w-full border-b-2 border-[#557C55] md:block hidden"
   >
     <div
-      class="flex justify-between items-centre text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
+      class="flex justify-between items-center text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
     >
+      <!-- Left side content -->
       <div class="flex items-center">
-        <button
-          @click="toggleMenu"
-          class="px-3 h-9 text-[#333333] focus:outline-none"
+        <ul class="flex items-center">
+          <li>
+            <img width="30" src="tonttu.png" />
+          </li>
+          <li>
+            <h1 class="static font-bold">Tontun paja</h1>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Center content (Search field) -->
+      <div class="flex items-center">
+        <div
+          name="hakukenttä"
+          class="static max-w-[550px] w-full mr-2 md:block hidden"
         >
-          <Icon name="mdi:menu" size="15" />
-        </button>
-        <div class="max-w-[550px] w-full mr-2 md:block hidden">
           <div
             class="flex items-center border-2 bg-[#A6CF98] border-[#557C55] rounded-md"
           >
@@ -39,7 +49,7 @@
             <div v-if="false" class="p-1">
               <nuxt-link
                 to="'/item/1'"
-                class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100"
+                class="flex items-cener justify-between w-full cursor-pointer hover:bg-gray-100"
               >
                 <div class="flex items-center">
                   <img
@@ -54,14 +64,11 @@
             </div>
           </div>
         </div>
+        <!-- Search field -->
+        <!-- (Place your search field code here) -->
       </div>
+      <!-- Right side content (Cart and Account) -->
       <ul class="flex items-center">
-        <li>
-          <img width="30" src="tonttu.png" />
-        </li>
-        <li>
-          <h1 class="font-bold">Tontun paja</h1>
-        </li>
         <li
           class="border-r-[1px] border-r-black px-1 hover:text-[#557C55] cursor-pointer"
         >

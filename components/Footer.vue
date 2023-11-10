@@ -1,5 +1,5 @@
 <template>
-  <div id="FooterMain" class="w-full bg-[#FA7070] border-t-2 border-[#557C55]">
+  <div id="FooterMain" class="w-full bg-[#FA7070]">
     <div class="max-w-[1200px] mx-auto px-4">
       <div class="md:flex gap-4 justify-between w-full">
         <div class="md:w-[50%] pt-4">
