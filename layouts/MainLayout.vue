@@ -7,15 +7,12 @@
       class="flex justify-between items-center text-xs font-light h-9 bg-[#F2FFE9] mx-auto"
     >
       <!-- Left side content -->
-      <div class="flex items-center">
-        <ul class="flex items-center">
-          <li>
-            <img width="30" src="tonttu.png" />
-          </li>
-          <li>
-            <h1 class="static font-bold">Tontun paja</h1>
-          </li>
-        </ul>
+      <div class="ml-2">
+        <nuxt-link to="/" class="flex items-center">
+          <img width="30" src="tonttu.png" />
+
+          <h1 class="static font-bold">Tontun paja</h1>
+        </nuxt-link>
       </div>
 
       <!-- Center content (Search field) -->
