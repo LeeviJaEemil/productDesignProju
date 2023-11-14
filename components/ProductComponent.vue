@@ -9,7 +9,7 @@
             cursor-pointer
         "
     >
-        <NuxtLink :to="'/item/${product.id}'">
+        <NuxtLink :to="`/item/${product.id}`">
             <img
                 class="rounded-t"
                 :src="product.url"
