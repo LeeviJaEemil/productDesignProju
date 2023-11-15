@@ -11,15 +11,23 @@
         <input
           type="email"
           v-model="loginEmail"
+          :class="[loginEmailClass, 'w-full px-2 py-1 rounded-md']"
           placeholder="Email"
-          class="w-full px-2 py-1 border border-gray-300 rounded-md"
         />
+        <div v-if="loginEmailError" class="text-red-500">
+          {{ loginEmailError }}
+        </div>
+
         <input
           type="password"
           v-model="loginPassword"
+          :class="[loginPasswordClass, 'w-full px-2 py-1 rounded-md']"
           placeholder="Password"
-          class="w-full px-2 py-1 border border-gray-300 rounded-md"
         />
+        <div v-if="loginPasswordError" class="text-red-500">
+          {{ loginPasswordError }}
+        </div>
+
         <button
           type="submit"
           class="w-full bg-[#557C55] hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
@@ -36,21 +44,31 @@
         <input
           type="email"
           v-model="registerEmail"
+          :class="[emailClass, 'w-full px-2 py-1 rounded-md']"
           placeholder="Email"
-          class="w-full px-2 py-1 border border-gray-300 rounded-md"
         />
+        <div v-if="emailError" class="text-red-500">{{ emailError }}</div>
         <input
           type="password"
           v-model="registerPassword"
+          :class="[passwordClass, 'w-full px-2 py-1 rounded-md']"
           placeholder="Password"
-          class="w-full px-2 py-1 border border-gray-300 rounded-md"
         />
+        <div v-if="passwordError" class="text-red-500">{{ passwordError }}</div>
+
         <input
           type="password"
           v-model="confirmPassword"
+          :class="[confirmPasswordClass, 'w-full px-2 py-1 rounded-md']"
           placeholder="Confirm password"
-          class="w-full px-2 py-1 border border-gray-300 rounded-md"
         />
+        <div v-if="confirmPasswordError" class="text-red-500">
+          {{ confirmPasswordError }}
+        </div>
+        <div v-if="userCreated" class="text-[#F2FFE9]">
+          {{ userCreated }}
+        </div>
+
         <button
           type="submit"
           class="w-full bg-[#557C55] hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
@@ -64,41 +82,122 @@
 </template>
 
 <script setup>
-
 import MainLayout from "~/layouts/MainLayout.vue";
-import { ref } from 'vue';
-import { auth } from '~/firebaseConfig';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { auth } from "~/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
-const loginEmail = ref('');
-const loginPassword = ref('');
-const registerEmail = ref('');
-const registerPassword = ref('');
-const confirmPassword = ref('');
+const registerEmail = ref("");
+const registerPassword = ref("");
+const confirmPassword = ref("");
+const emailClass = ref("border border-gray-300");
+const emailError = ref("");
+const passwordClass = ref("border border-gray-300");
+const confirmPasswordClass = ref("border border-gray-300");
+const passwordError = ref("");
+const confirmPasswordError = ref("");
+const userCreated = ref("");
+
+const loginEmail = ref("");
+const loginPassword = ref("");
+const loginEmailClass = ref("border border-gray-300");
+const loginPasswordClass = ref("border border-gray-300");
+const loginEmailError = ref("");
+const loginPasswordError = ref("");
+
+const router = useRouter();
 
 const login = async () => {
-  try {
-    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
-    // Redirect or perform other actions upon successful login
-  } catch (error) {
-    console.error("Error logging in: ", error);
-    // Handle errors (e.g., display a message)
-  }
-};
+  // Nollaa virheet
+  loginEmailError.value = "";
+  loginEmailClass.value = "border border-gray-300";
+  loginPasswordError.value = "";
+  loginPasswordClass.value = "border border-gray-300";
 
-const register = async () => {
-  if (registerPassword.value !== confirmPassword.value) {
-    console.error("Passwords do not match");
+  if (!loginEmail.value) {
+    loginEmailError.value = "Please enter your email";
+    loginEmailClass.value = "border border-red-500";
+    return;
+  }
+
+  if (!loginPassword.value) {
+    loginPasswordError.value = "Please enter your password";
+    loginPasswordClass.value = "border border-red-500";
     return;
   }
 
   try {
-    await createUserWithEmailAndPassword(auth, registerEmail.value, registerPassword.value);
-    // Redirect or perform other actions upon successful registration
+    await signInWithEmailAndPassword(
+      auth,
+      loginEmail.value,
+      loginPassword.value
+    );
+    // ...onnistunut kirjautuminen...
   } catch (error) {
-    console.error("Error creating an account: ", error);
-    // Handle errors (e.g., display a message)
+    console.error("Error logging in: ", error);
+    // Näytä yleinen virheviesti
+
+    loginEmailClass.value = "border border-red-500";
+    loginPasswordError.value = "Invalid login credentials";
+    loginPasswordClass.value = "border border-red-500";
   }
 };
 
+const register = async () => {
+  // Tyhjennä virheviestit ensin
+  emailError.value = "";
+  emailClass.value = "border border-gray-300";
+  emailError.value = "";
+  emailClass.value = "border border-gray-300";
+  passwordError.value = "";
+  passwordClass.value = "border border-gray-300";
+  confirmPasswordError.value = "";
+  confirmPasswordClass.value = "border border-gray-300";
+  userCreated.value = "";
+
+  if (!registerPassword.value) {
+    passwordError.value = "Give a password";
+    passwordClass.value = "border border-red-500";
+    confirmPasswordClass.value = "border border-red-500";
+    return;
+  }
+
+  if (!confirmPassword.value) {
+    confirmPasswordError.value = "Please confirm password";
+    confirmPasswordClass.value = "border border-red-500";
+    return;
+  }
+
+  if (registerPassword.value !== confirmPassword.value) {
+    passwordError.value = "Passwords do not match";
+    confirmPasswordError.value = "Passwords do not match";
+    passwordClass.value = "border border-red-500";
+    confirmPasswordClass.value = "border border-red-500";
+    return;
+  }
+
+  try {
+    await createUserWithEmailAndPassword(
+      auth,
+      registerEmail.value,
+      registerPassword.value
+    );
+    //rekisteröinti onnistuu
+    loginEmailClass.value = "border border-w-5px border-[#F2FFE9]";
+    loginPasswordClass.value = "border border-w-5px border-[#F2FFE9]";
+    userCreated.value = "Account created";
+  } catch (error) {
+    if (error.code === "auth/email-already-in-use") {
+      emailError.value = "This email address is already in use";
+      emailClass.value = "border border-red-500";
+      return;
+    } else {
+      alert("Error creating an account: ");
+    }
+  }
+};
 </script>
