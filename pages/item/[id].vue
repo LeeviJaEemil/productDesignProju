@@ -86,6 +86,6 @@ const isInCart = computed(() => {
 ])
 
 const addToCart = () => {
-    alert('ADDED')
+    userStore.cart.push(product.value.data)
 }
 </script>
