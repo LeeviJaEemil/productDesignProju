@@ -64,16 +64,41 @@
 </template>
 
 <script setup>
+
 import MainLayout from "~/layouts/MainLayout.vue";
+import { ref } from 'vue';
+import { auth } from '~/firebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-// const client = useFirebaseCLient();
-// const user = useFirebaseUser();
+const loginEmail = ref('');
+const loginPassword = ref('');
+const registerEmail = ref('');
+const registerPassword = ref('');
+const confirmPassword = ref('');
 
-// watchEffect(() => {
-//   if (user.value) {
-//     return navigateTo("/");
-//   }
-// });
+const login = async () => {
+  try {
+    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+    // Redirect or perform other actions upon successful login
+  } catch (error) {
+    console.error("Error logging in: ", error);
+    // Handle errors (e.g., display a message)
+  }
+};
 
-// const login = async (prov) => {};
+const register = async () => {
+  if (registerPassword.value !== confirmPassword.value) {
+    console.error("Passwords do not match");
+    return;
+  }
+
+  try {
+    await createUserWithEmailAndPassword(auth, registerEmail.value, registerPassword.value);
+    // Redirect or perform other actions upon successful registration
+  } catch (error) {
+    console.error("Error creating an account: ", error);
+    // Handle errors (e.g., display a message)
+  }
+};
+
 </script>
