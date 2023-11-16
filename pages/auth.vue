@@ -112,7 +112,6 @@ const loginPasswordError = ref("");
 const router = useRouter();
 
 const login = async () => {
-  // Nollaa virheet
   loginEmailError.value = "";
   loginEmailClass.value = "border border-gray-300";
   loginPasswordError.value = "";

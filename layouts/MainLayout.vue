@@ -84,27 +84,53 @@
           <h1>Account</h1>
           <Icon name="ph:user-thin" size="17" class="ml-1" />
           <Icon name="mdi:chevron-down" size="17" />
-          <div
+          <ul
             id="AccountMenu"
             v-if="isAccountMenu"
-            class="absolute right-0 mt-2 bg-white shadow-md w-40 py-2 top-[30px] text-[#333333]"
+            class="absolute right-0 mt-2 bg-[#F2FFE9] border-[2px] border-[#557C55] shadow-md w-40 py-2 top-[30px] text-[#333333]"
           >
-            <NuxtLink to="/auth">Login</NuxtLink>
-          </div>
+            <nuxt-link
+              to="/auth"
+              v-if="!user"
+              class="block px-4 py-1 hover:bg-[#A6CF98]"
+              >Login</nuxt-link
+            >
+            <div
+              @click="hanleLogout"
+              v-if="user"
+              class="block px-4 py-1 bg-[#FA7070] hover:bg-red-300"
+            >
+              Log out
+            </div>
+          </ul>
         </div>
       </div>
 
       <div
         v-if="isMenuOpen"
-        class="absolute right-0 top-full mt-2 bg-white shadow-md w-40 py-2 md:hidden"
+        class="absolute right-0 top-full mt-2 bg-[#F2FFE9] shadow-md w-40 py-2 md:hidden border-[2px] border-[#557C55]"
       >
         <!-- Valikon sisältö -->
         <nuxt-link to="/cart" class="block px-4 py-1 hover:bg-gray-100"
-          >Ostoskori</nuxt-link
+          ><Icon
+            name="ph:shopping-cart-simple-light"
+            class="mr-1"
+            size="12"
+          />Cart
+        </nuxt-link>
+        <nuxt-link
+          to="/auth"
+          v-if="!user"
+          class="block px-4 py-1 hover:bg-[#A6CF98] border-t-[1px] border-b-[1px] border-[#557C55]"
+          >Login</nuxt-link
         >
-        <nuxt-link to="/auth" class="block px-4 py-1 hover:bg-gray-100"
-          >Kirjaudu</nuxt-link
+        <div
+          @click="hanleLogout"
+          v-if="user"
+          class="block px-4 py-1 bg-[#FA7070] hover:bg-red-300"
         >
+          Log out
+        </div>
       </div>
     </div>
 
@@ -124,7 +150,27 @@
 </template>
 
 <script setup>
+import { onAuthStateChanged } from "firebase/auth";
 import { ref } from "vue";
+import { auth } from "@/firebaseConfig";
+import { signOut } from "firebase/auth";
+
+const user = ref(null);
+
+onAuthStateChanged(auth, (firebaseUser) => {
+  user.value = firebaseUser;
+});
+
+function hanleLogout() {
+  signOut(auth)
+    .then(() => {
+      alert("logged out succesfully");
+    })
+    .catch((error) => {
+      alert("Error while trying to sign out: ", error);
+    });
+}
+
 let isMenuOpen = ref(false);
 let showSearch = ref(false);
 let isAccountMenu = ref(false);
