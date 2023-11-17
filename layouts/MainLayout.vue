@@ -47,7 +47,7 @@
             <div
               class="absolute border-r-2 border-l-2 border-b-2 border-[#557C55] bg-[#F2FFE9] max-w-[515px] h-auto w-full"
             >
-              <div v-if="true" class="p-1">
+              <div v-if="false" class="p-1">
                 <nuxt-link
                   to="'/item/1'"
                   class="flex items-cener justify-between w-full cursor-pointer hover:bg-gray-100"

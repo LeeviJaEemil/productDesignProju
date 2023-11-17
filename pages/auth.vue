@@ -82,6 +82,7 @@
 </template>
 
 <script setup>
+import MainLayout from "~/layouts/MainLayout.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { auth, db } from "~/firebaseConfig";
