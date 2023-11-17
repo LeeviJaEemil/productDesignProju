@@ -82,14 +82,14 @@
 </template>
 
 <script setup>
-import MainLayout from "~/layouts/MainLayout.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { auth } from "~/firebaseConfig";
+import { auth, db } from "~/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 const registerEmail = ref("");
 const registerPassword = ref("");
@@ -147,9 +147,6 @@ const login = async () => {
 };
 
 const register = async () => {
-  // Tyhjennä virheviestit ensin
-  emailError.value = "";
-  emailClass.value = "border border-gray-300";
   emailError.value = "";
   emailClass.value = "border border-gray-300";
   passwordError.value = "";
@@ -180,12 +177,20 @@ const register = async () => {
   }
 
   try {
-    await createUserWithEmailAndPassword(
+    const userCredential = await createUserWithEmailAndPassword(
       auth,
       registerEmail.value,
       registerPassword.value
     );
-    //rekisteröinti onnistuu
+
+    // Tallenna käyttäjän tiedot Firestoreen
+    const uid = userCredential.user.uid;
+    await setDoc(doc(db, "users", uid), {
+      email: registerEmail.value,
+      // Lisää muita tietoja tarvittaessa
+    });
+
+    // Rekisteröinti onnistui
     loginEmailClass.value = "border border-w-5px border-[#F2FFE9]";
     loginPasswordClass.value = "border border-w-5px border-[#F2FFE9]";
     userCreated.value = "Account created";
@@ -193,8 +198,8 @@ const register = async () => {
     if (error.code === "auth/email-already-in-use") {
       emailError.value = "This email address is already in use";
       emailClass.value = "border border-red-500";
-      return;
     } else {
+      console.error("Error creating an account: ", error);
       alert("Error creating an account: ");
     }
   }
