@@ -5,14 +5,14 @@
   >
     <!--konenäkymä-->
     <div
-      id="desc"
+      id="descview"
       class="hidden md:flex items-row text-xs font-light h-9 px-2 relative"
     >
       <nuxt-link
         to="/"
         class="flex-grow flex items-center justify-center md:justify-start"
       >
-        <img width="30" src="tonttu.png" alt="Logo" />
+        <img width="30" src="tonttu.png" alt="notfoun.png" />
         <h1 class="static font-bold ml-2">Tontun paja</h1>
       </nuxt-link>
       <div class="flex ml-2 items-center space-x-4">
@@ -26,8 +26,9 @@
             >
               <input
                 v-model="searchItem"
-                type="search"
+                @input="searchProducts"
                 class="fw-full w-[500px] placeholder-[#557C55] bg-[#A6CF98] text-sm pl-3 focus:outline-none"
+                type="search"
                 placeholder="Search..."
               />
               <Icon
@@ -45,24 +46,30 @@
             </div>
 
             <div
-              class="absolute border-r-2 border-l-2 border-b-2 border-[#557C55] bg-[#F2FFE9] max-w-[515px] h-auto w-full"
+              v-if="searchResults.length > 0"
+              class="mt-1 absolute border-2 border-[#557C55] bg-[#F2FFE9] max-w-[515px] h-auto w-full"
             >
-              <div v-if="false" class="p-1">
-                <nuxt-link
-                  to="'/item/1'"
-                  class="flex items-cener justify-between w-full cursor-pointer hover:bg-gray-100"
-                >
-                  <div class="flex items-center">
-                    <img
-                      class="rounded-md"
-                      width="40"
-                      src="https://picsum.photos/id82/300/320"
-                    />
-                    <div class="truncate ml-2">Testi</div>
+              <nuxt-link
+                :to="'/item/' + product.id"
+                v-for="product in searchResults"
+                :key="product.id"
+                class="flex items-cener justify-between w-full cursor-pointer hover:bg-gray-100 mb-1"
+              >
+                <div class="flex items-center">
+                  <img
+                    class="rounded-md border-2 border-[#557C55]"
+                    width="40"
+                    :src="product.url"
+                    alt="no image"
+                  />
+                  <div class="truncate ml-2">
+                    {{ product.title }}
                   </div>
-                  <div class="truncate">100 €</div>
-                </nuxt-link>
-              </div>
+                </div>
+                <div class="truncate">
+                  ${{ (product.price / 100).toFixed(2) }}
+                </div>
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -175,10 +182,21 @@
 <script setup>
 import { onAuthStateChanged } from "firebase/auth";
 import { ref } from "vue";
-import { auth } from "@/firebaseConfig";
+import { auth } from "~/firebaseConfig";
 import { signOut } from "firebase/auth";
+import { app } from "~/firebaseConfig";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 const user = ref(null);
+const db = getFirestore(app);
+const searchItem = ref("");
+const searchResults = ref([]);
 
 onAuthStateChanged(auth, (firebaseUser) => {
   user.value = firebaseUser;
@@ -193,11 +211,29 @@ function hanleLogout() {
       alert("Error while trying to sign out: ", error);
     });
 }
+async function searchProducts() {
+  if (searchItem.value) {
+    const productsRef = collection(db, "products");
+    const q = query(
+      productsRef,
+      where("desc", "array-contains", searchItem.value.toLowerCase())
+    );
+
+    const querySnapshot = await getDocs(q);
+    searchResults.value = querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .slice(0, 5);
+  } else {
+    searchResults.value = [];
+  }
+}
 
 let isMenuOpen = ref(false);
 let showSearch = ref(false);
 let isAccountMenu = ref(false);
-let searchItem = ref("");
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
