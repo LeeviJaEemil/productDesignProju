@@ -5,13 +5,15 @@
       class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4"
     >
       <div v-if="products.length" v-for="product in products" :key="product.id">
-        <div class="product-card">
-          <img :src="product.url" :alt="product.title" class="product-image" />
-          <div class="product-info">
-            <h3>{{ product.title }}</h3>
-            <p>${{ (product.price / 100).toFixed(2) }}</p>
+        <NuxtLink :to="`/item/${product.id}`">
+          <div class="product-card">
+            <img :src="product.url" :alt="product.title" class="product-image" />
+            <div class="product-info">
+              <h3>{{ product.title }}</h3>
+              <p>${{ (product.price / 100).toFixed(2) }}</p>
+            </div>
           </div>
-        </div>
+        </NuxtLink>
       </div>
       <div v-else>Loading products...</div>
     </div>
