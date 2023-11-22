@@ -5,7 +5,7 @@
       class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4"
     >
       <div v-if="products.length" v-for="product in products" :key="product.id">
-        <nuxt-link :to="'/item/' + product.id">
+        <NuxtLink :to="`/item/${product.id}`">
           <div
             class="product-card"
             @mouseover="startImageRotation(product)"
@@ -21,7 +21,7 @@
               <p>${{ (product.price / 100).toFixed(2) }}</p>
             </div>
           </div>
-        </nuxt-link>
+        </NuxtLink>
       </div>
       <div v-else>Loading products...</div>
     </div>
@@ -71,3 +71,4 @@ function getProductImageUrl(product) {
   return product.url;
 }
 </script>
+
