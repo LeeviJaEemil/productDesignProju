@@ -12,7 +12,11 @@
         to="/"
         class="flex-grow flex items-center justify-center md:justify-start"
       >
-        <img width="30" src="tonttu.png" alt="notfoun.png" />
+        <img
+          width="30"
+          src="https://firebasestorage.googleapis.com/v0/b/productdesignproju.appspot.com/o/otherimages%2Ftonttu.png?alt=media&token=880f19e7-3451-4f05-ac31-92e8de2c1c1d"
+          alt="no img"
+        />
         <h1 class="static font-bold ml-2">Tontun paja</h1>
       </nuxt-link>
       <div class="flex ml-2 items-center space-x-4">
@@ -193,6 +197,8 @@ import {
   getDocs,
 } from "firebase/firestore";
 
+import { useUserStore } from "~/stores/user";
+const userStore = useUserStore();
 const user = ref(null);
 const db = getFirestore(app);
 const searchItem = ref("");
