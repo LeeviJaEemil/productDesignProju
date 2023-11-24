@@ -43,6 +43,7 @@
               />
 
               <button
+                @click="search"
                 class="flex items-center h-[100%] p-1.5 px-3 bg-[#557C55]"
               >
                 <Icon name="ph:magnifying-glass" size="15" color="#fff" />
@@ -125,7 +126,11 @@
           to="/"
           class="flex-grow flex items-center justify-center md:justify-start"
         >
-          <img width="30" src="tonttu.png" alt="Logo" />
+          <img
+            width="30"
+            src="https://firebasestorage.googleapis.com/v0/b/productdesignproju.appspot.com/o/otherimages%2Ftonttu.png?alt=media&token=880f19e7-3451-4f05-ac31-92e8de2c1c1d"
+            alt="no img"
+          />
           <h1 class="static font-bold ml-2">Tontun paja</h1>
         </nuxt-link>
 
@@ -159,24 +164,51 @@
           </div>
         </div>
       </div>
-      <div>
+
+      <div
+        v-if="showSearch"
+        class="static md:hidden w-full bg-[#F2FFE9] px-3 py-3"
+      >
         <div
-          v-if="showSearch"
-          class="static md:hidden w-full bg-[#F2FFE9] px-3 py-3"
+          class="flex items-center border-2 bg-[#A6CF98] border-[#557C55] rounded-md"
         >
-          <div
-            class="flex items-center border-2 bg-[#A6CF98] border-[#557C55] rounded-md"
+          <input
+            v-model="searchItem"
+            @input="searchProducts"
+            type="search"
+            class="w-full placeholder-[#557C55] bg-[#A6CF98] text-sm pl-3 focus:outline-none"
+            placeholder="Search..."
+          />
+          <button
+            @click="search"
+            class="flex items-center h-[100%] p-1.5 px-3 bg-[#557C55]"
           >
-            <input
-              v-model="searchItem"
-              type="search"
-              class="w-full placeholder-[#557C55] bg-[#A6CF98] text-sm pl-3 focus:outline-none"
-              placeholder="Search..."
-            />
-            <button class="flex items-center h-[100%] p-1.5 px-3 bg-[#557C55]">
-              <Icon name="ph:arrow-right" size="15" color="#fff" />
-            </button>
-          </div>
+            <Icon name="ph:arrow-right" size="15" color="#fff" />
+          </button>
+        </div>
+        <div
+          v-if="searchResults.length > 0"
+          class="mt-1 border-2 border-[#557C55] bg-[#F2FFE9] max-w-full h-auto w-full"
+        >
+          <nuxt-link
+            :to="'/item/' + product.id"
+            v-for="product in searchResults"
+            :key="product.id"
+            class="flex items-cener justify-between w-full cursor-pointer hover:bg-gray-100 mb-1"
+          >
+            <div class="flex items-center">
+              <img
+                class="rounded-md border-2 border-[#557C55]"
+                width="40"
+                :src="product.url"
+                alt="no image"
+              />
+              <div class="truncate ml-2">
+                {{ product.title }}
+              </div>
+            </div>
+            <div class="truncate">${{ (product.price / 100).toFixed(2) }}</div>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -189,6 +221,8 @@ import { ref } from "vue";
 import { auth } from "~/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { app } from "~/firebaseConfig";
+import { useRouter } from "vue-router";
+
 import {
   getFirestore,
   collection,
@@ -199,6 +233,7 @@ import {
 
 import { useUserStore } from "~/stores/user";
 const userStore = useUserStore();
+const router = useRouter();
 const user = ref(null);
 const db = getFirestore(app);
 const searchItem = ref("");
@@ -217,24 +252,34 @@ function hanleLogout() {
       alert("Error while trying to sign out: ", error);
     });
 }
-async function searchProducts() {
-  if (searchItem.value) {
-    const productsRef = collection(db, "products");
-    const q = query(
-      productsRef,
-      where("desc", "array-contains", searchItem.value.toLowerCase())
-    );
 
-    const querySnapshot = await getDocs(q);
-    searchResults.value = querySnapshot.docs
-      .map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      .slice(0, 5);
+async function searchProducts() {
+  if (searchItem.value.length >= 1) {
+    const searchWords = searchItem.value.toLowerCase().split(" ");
+    const productsRef = collection(db, "products");
+
+    let combinedResults = new Set();
+    for (let word of searchWords) {
+      const q = query(productsRef, where("desc", "array-contains", word));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.docs.forEach((doc) => {
+        combinedResults.add({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+    }
+
+    searchResults.value = Array.from(combinedResults).slice(0, 5);
   } else {
     searchResults.value = [];
   }
+}
+
+function search() {
+  const searchTerm = searchItem.value.trim().toLowerCase().replace(/\s+/g, "_");
+  const searchUrl = `/search/${searchTerm}`;
+  router.push(searchUrl);
 }
 
 let isMenuOpen = ref(false);

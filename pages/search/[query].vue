@@ -29,24 +29,35 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref, reactive } from "vue";
-import { collection, getDocs } from "firebase/firestore";
+import { onMounted, ref, reactive } from "vue";
+import { useRoute } from "vue-router";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "~/firebaseConfig";
 import MainLayout from "~/layouts/MainLayout.vue";
 
 const products = ref([]);
 const activeProduct = reactive({ id: null, imageIndex: 0, interval: null });
+const route = useRoute();
+
+async function fetchProducts(searchTerms) {
+  const productsRef = collection(db, "products");
+  let allResults = new Set();
+
+  for (const term of searchTerms) {
+    const q = query(productsRef, where("desc", "array-contains", term));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      allResults.add({ id: doc.id, ...doc.data() });
+    });
+  }
+
+  return Array.from(allResults);
+}
 
 onMounted(async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "products"));
-    products.value = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  } catch (error) {
-    console.error("Error fetching products: ", error);
-  }
+  const searchTerm = route.params.query.replace(/_/g, " ").toLowerCase();
+  const searchTerms = searchTerm.split(" ");
+  products.value = await fetchProducts(searchTerms);
 });
 
 function startImageRotation(product) {
