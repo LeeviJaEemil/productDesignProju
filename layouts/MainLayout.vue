@@ -30,6 +30,7 @@
             >
               <input
                 v-model="searchItem"
+                @keyup.enter="search"
                 @input="searchProducts"
                 class="fw-full w-[500px] placeholder-[#557C55] bg-[#A6CF98] text-sm pl-3 focus:outline-none"
                 type="search"
