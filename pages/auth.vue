@@ -136,11 +136,9 @@ const login = async () => {
       loginEmail.value,
       loginPassword.value
     );
-    // ...onnistunut kirjautuminen...
+    navigateTo("/");
   } catch (error) {
     console.error("Error logging in: ", error);
-    // Näytä yleinen virheviesti
-
     loginEmailClass.value = "border border-red-500";
     loginPasswordError.value = "Invalid login credentials";
     loginPasswordClass.value = "border border-red-500";
