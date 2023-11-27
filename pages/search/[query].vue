@@ -1,7 +1,8 @@
 <template>
   <MainLayout />
-  <div id="IndexPage" class="bg-[#A6CF98] mx-auto px-2">
+  <div class="bg-[#A6CF98] mx-auto px-2 min-h-screen">
     <div
+      v-if="products.length"
       class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4"
     >
       <div v-if="products.length" v-for="product in products" :key="product.id">
@@ -23,7 +24,9 @@
           </div>
         </NuxtLink>
       </div>
-      <div v-else>Loading products...</div>
+    </div>
+    <div v-else class="text-center text-xl font-medium">
+      Ei tuotteita, jotka vastaavat hakuehtoja.
     </div>
   </div>
 </template>
