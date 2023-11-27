@@ -70,7 +70,6 @@ function getProductImageUrl(product) {
   }
   return product.url;
 }
-
 onBeforeUnmount(() => {
   stopImageRotation();
 });
