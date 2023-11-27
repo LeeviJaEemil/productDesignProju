@@ -1,121 +1,174 @@
 <template>
-  <MainLayout/>
-      <div id="CheckoutPage" class="mt-4 max-w-[1200px] mx-auto px-2">
+  <MainLayout />
+  <div id="CheckoutPage" class="mt-4 max-w-[1200px] mx-auto px-2">
+    <div class="md:flex gap-4 justify-between mx-auto w-full">
+      <div class="md:w-[65%]">
+        <div class="bg-[#A6CF98] rounded-lg p-4">
+          <div class="text-xl font-semibold mb-2">Shipping Address</div>
 
-          <div class="md:flex gap-4 justify-between mx-auto w-full">
-              <div class="md:w-[65%]">
-                  <div class="bg-[#A6CF98] rounded-lg p-4">
+          <div class="pt-2 border-t">
+            <div class="underline pb-1">Delivery Address</div>
+            <form @submit.prevent="submit()">
+              <TextInput
+                class="w-full"
+                placeholder="Contact Name"
+                v-model:input="contactName"
+                inputType="text"
+                :error="
+                  error && error.type == 'contactName' ? error.message : ''
+                "
+              />
 
-                      <div class="text-xl font-semibold mb-2">Shipping Address</div>
+              <TextInput
+                class="w-full mt-2"
+                placeholder="Address"
+                v-model:input="address"
+                inputType="text"
+                :error="error && error.type == 'address' ? error.message : ''"
+              />
 
-                      <div v-if="currentAddress && currentAddress.data">
-                          <NuxtLink 
-                              to="/address"
-                              class="flex items-center pb-2 text-blue-500 hover:text-red-400"
-                          >
-                              <Icon name="mdi:plus" size="18" class="mr-2"/>
-                              Update Address
-                          </NuxtLink>
+              <TextInput
+                class="w-full mt-2"
+                placeholder="Zip Code"
+                v-model:input="zipCode"
+                inputType="text"
+                :error="error && error.type == 'zipCode' ? error.message : ''"
+              />
 
-                          <div class="pt-2 border-t">
-                              <div class="underline pb-1">Delivery Address</div>
-                              <ul class="text-xs">
-                                  <li class="flex items-center gap-2">
-                                      <div>Contact name:</div> 
-                                      <div class="font-bold">{{ currentAddress.data.name }}</div>
-                                  </li>
-                                  <li class="flex items-center gap-2">
-                                      <div>Address:</div> 
-                                      <div class="font-bold">{{ currentAddress.data.address }}</div>
-                                  </li>
-                                  <li class="flex items-center gap-2">
-                                      <div>Zip Code:</div> 
-                                      <div class="font-bold">{{ currentAddress.data.zipcode }}</div>
-                                  </li>
-                                  <li class="flex items-center gap-2">
-                                      <div>City:</div> 
-                                      <div class="font-bold">{{ currentAddress.data.city }}</div>
-                                  </li>
-                                  <li class="flex items-center gap-2">
-                                      <div>Country:</div> 
-                                      <div class="font-bold">{{ currentAddress.data.country }}</div>
-                                  </li>
-                              </ul>
-                          </div>
-                      </div>
+              <TextInput
+                class="w-full mt-2"
+                placeholder="City"
+                v-model:input="city"
+                inputType="text"
+                :error="error && error.type == 'city' ? error.message : ''"
+              />
 
-                      <NuxtLink 
-                          v-else
-                          to="/address"
-                          class="flex items-center text-blue-500 hover:text-red-400"
-                      >
-                          <Icon name="mdi:plus" size="18" class="mr-2"/>
-                          Add New Address
-                      </NuxtLink>
-                  </div>
-
-                  <div id="Items" class="bg-[#A6CF98] rounded-lg p-4 mt-4">
-                      <div v-for="product in userStore.checkout">
-                          <CheckoutItem :product="product" />
-                      </div>
-                  </div>
-              </div>
-
-              <div class="md:hidden block my-4"/>
-              <div class="md:w-[35%]">
-                  <div id="PlaceOrder" class="bg-[#A6CF98] rounded-lg p-4">
-
-                      <div class="text-2xl font-extrabold mb-2">Summary</div>
-
-                      <div class="border-t" />
-
-                      <div class="flex items-center justify-between my-4">
-                          <div class="font-semibold">Total</div>
-                          <div class="text-2xl font-semibold">
-                              $ <span class="font-extrabold">{{ total / 100 }}</span>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+              <TextInput
+                class="w-full mt-2"
+                placeholder="Country"
+                v-model:input="country"
+                inputType="text"
+                :error="error && error.type == 'country' ? error.message : ''"
+              />
+            </form>
           </div>
+        </div>
+
+        <div id="Items" class="bg-[#A6CF98] rounded-lg p-4 mt-4">
+          <div v-for="product in userStore.checkout">
+            <CheckoutItem :product="product" />
+          </div>
+        </div>
       </div>
+
+      <div class="md:hidden block my-4" />
+      <div class="md:w-[35%]">
+        <div id="PlaceOrder" class="bg-[#A6CF98] rounded-lg p-4">
+          <div class="text-2xl font-extrabold mb-2">Summary</div>
+
+          <div class="border-t" />
+
+          <div class="flex items-center justify-between my-4">
+            <div class="font-semibold">Total</div>
+            <div class="text-2xl font-semibold">
+              $ <span class="font-extrabold">{{ total / 100 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-
 <script setup>
-import MainLayout from '~/layouts/MainLayout.vue';
-import { useUserStore } from '~/stores/user';
+import MainLayout from "~/layouts/MainLayout.vue";
+import { useUserStore } from "~/stores/user";
 import { auth } from "@/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-const userStore = useUserStore()
-const route = useRoute()
-
+const userStore = useUserStore();
+const route = useRoute();
 
 const user = ref(null);
+
+let contactName = ref(null);
+let address = ref(null);
+let zipCode = ref(null);
+let city = ref(null);
+let country = ref(null);
+
+let isUpdate = ref(false);
+let isWorking = ref(false);
+let error = ref(null);
 
 onAuthStateChanged(auth, (firebaseUser) => {
   user.value = firebaseUser;
 });
 
+let stripe = null;
+let elements = null;
+let card = null;
+let form = null;
+let total = ref(0);
+let clientSecret = null;
+let currentAddress = ref(null);
+let isProcessing = ref(false);
 
-let stripe = null
-let elements = null
-let card = null
-let form = null
-let total = ref(0)
-let clientSecret = null
-let currentAddress = ref(null)
-let isProcessing = ref(false)
+/*watchEffect(async () => {
+  currentAddress.value = await useFetch(`${user.value.id}`);
+
+  if (currentAddress.value.data) {
+    contactName.value = currentAddress.value.data.name;
+    address.value = currentAddress.value.data.address;
+    zipCode.value = currentAddress.value.data.zipcode;
+    city.value = currentAddress.value.data.city;
+    country.value = currentAddress.value.data.country;
+
+    isUpdate.value = true;
+  }
+
+  userStore.isLoading = false;
+});*/
+
+const submit = async () => {
+  isWorking.value = true;
+  error.value = null;
+
+  if (!contactName.value) {
+    error.value = {
+      type: "contactName",
+      message: "A contact name is required",
+    };
+  } else if (!address.value) {
+    error.value = {
+      type: "address",
+      message: "An address is required",
+    };
+  } else if (!zipCode.value) {
+    error.value = {
+      type: "zipCode",
+      message: "A zip code is required",
+    };
+  } else if (!city.value) {
+    error.value = {
+      type: "city",
+      message: "A city is required",
+    };
+  } else if (!country.value) {
+    error.value = {
+      type: "country",
+      message: "A country is required",
+    };
+  }
+
+  if (error.value) {
+    isWorking.value = false;
+    return;
+  }
+};
 
 /*onBeforeMount(async () => {
   if (userStore.checkout.length < 1) {
       return navigateTo('/cart')
-  }
-
-  total.value = 0.00
-  if (user.value) {
-      currentAddress.value = await useFetch(`/api/prisma/get-address-by-user/${user.value.id}`)
-      setTimeout(() => userStore.isLoading = false, 200)
   }
 })*/
 
@@ -126,103 +179,109 @@ let isProcessing = ref(false)
 })*/
 
 onMounted(async () => {
-  isProcessing.value = true
+  isProcessing.value = true;
 
-  userStore.checkout.forEach(item => {
-      total.value += item.price
-  })
-})
+  userStore.checkout.forEach((item) => {
+    total.value += item.price;
+  });
+});
 
-watch(() => total.value, () => {
-  if (total.value > 0) {
-      stripeInit()
+watch(
+  () => total.value,
+  () => {
+    if (total.value > 0) {
+      stripeInit();
+    }
   }
-})
+);
 
 const stripeInit = async () => {
-  const runtimeConfig = useRuntimeConfig()
+  const runtimeConfig = useRuntimeConfig();
   stripe = Stripe(runtimeConfig.stripePk);
 
-  let res = await $fetch('/api/stripe/paymentintent', {
-      method: 'POST',
-      body: {
-          amount: total.value,
-      }
-  })
-  clientSecret = res.client_secret
+  let res = await $fetch("/api/stripe/paymentintent", {
+    method: "POST",
+    body: {
+      amount: total.value,
+    },
+  });
+  clientSecret = res.client_secret;
 
   elements = stripe.elements();
   var style = {
-      base: {
-          fontSize: "18px",
-      },
-      invalid: {
-          fontFamily: 'Arial, sans-serif',
-          color: "#EE4B2B",
-          iconColor: "#EE4B2B"
-      }
+    base: {
+      fontSize: "18px",
+    },
+    invalid: {
+      fontFamily: "Arial, sans-serif",
+      color: "#EE4B2B",
+      iconColor: "#EE4B2B",
+    },
   };
-  card = elements.create("card", { 
-      hidePostalCode: true, 
-      style: style 
+  card = elements.create("card", {
+    hidePostalCode: true,
+    style: style,
   });
 
   // Stripe injects an iframe into the DOM
   card.mount("#card-element");
   card.on("change", function (event) {
-      // Disable the Pay button if there are no card details in the Element
-      document.querySelector("button").disabled = event.empty;
-      document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
+    // Disable the Pay button if there are no card details in the Element
+    document.querySelector("button").disabled = event.empty;
+    document.querySelector("#card-error").textContent = event.error
+      ? event.error.message
+      : "";
   });
 
-  isProcessing.value = false
-}
+  isProcessing.value = false;
+};
 
 const pay = async () => {
-  if (currentAddress.value && currentAddress.value.data == '') {
-      showError('Please add shipping address')
-      return 
+  if (currentAddress.value && currentAddress.value.data == "") {
+    showError("Please add shipping address");
+    return;
   }
-  isProcessing.value = true
-  
+  isProcessing.value = true;
+
   let result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: { card: card },
-  })
+    payment_method: { card: card },
+  });
 
   if (result.error) {
-      showError(result.error.message);
-      isProcessing.value = false
+    showError(result.error.message);
+    isProcessing.value = false;
   } else {
-      await createOrder(result.paymentIntent.id)
-      userStore.cart = []
-      userStore.checkout = []
-      setTimeout(() => {
-          return navigateTo('/success')
-      }, 500)
+    await createOrder(result.paymentIntent.id);
+    userStore.cart = [];
+    userStore.checkout = [];
+    setTimeout(() => {
+      return navigateTo("/success");
+    }, 500);
   }
-}
+};
 
 const createOrder = async (stripeId) => {
-  await useFetch('/api/prisma/create-order', {
-      method: "POST",
-      body: {
-          userId: user.value.id,
-          stripeId: stripeId,
-          name: currentAddress.value.data.name,
-          address: currentAddress.value.data.address,
-          zipcode: currentAddress.value.data.zipcode,
-          city: currentAddress.value.data.city,
-          country: currentAddress.value.data.country,
-          products: userStore.checkout
-      }
-  })
-}
+  await useFetch("/api/prisma/create-order", {
+    method: "POST",
+    body: {
+      userId: user.value.id,
+      stripeId: stripeId,
+      name: currentAddress.value.data.name,
+      address: currentAddress.value.data.address,
+      zipcode: currentAddress.value.data.zipcode,
+      city: currentAddress.value.data.city,
+      country: currentAddress.value.data.country,
+      products: userStore.checkout,
+    },
+  });
+};
 
 const showError = (errorMsgText) => {
   let errorMsg = document.querySelector("#card-error");
 
   errorMsg.textContent = errorMsgText;
-  setTimeout(() => { errorMsg.textContent = "" }, 4000);
+  setTimeout(() => {
+    errorMsg.textContent = "";
+  }, 4000);
 };
-
 </script>
