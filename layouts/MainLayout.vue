@@ -1,16 +1,16 @@
 <template>
   <div
     id="MainLayout"
-    class="justify- text-center bg-[#F2FFE9] border-b-2 border-[#557C55]"
+    class="text-center bg-[#F2FFE9] border-b-2 border-[#557C55]"
   >
     <!--konenäkymä-->
     <div
       id="descview"
-      class="hidden md:flex items-row text-xs font-light h-9 px-2 relative"
+      class="justify-between hidden md:flex items-row text-xs font-light h-9 px-2 relative"
     >
       <nuxt-link
         to="/"
-        class="flex-grow flex items-center justify-center md:justify-start"
+        class="flex-grow flex items-center max-w-[10%] md:justify-start"
       >
         <img
           width="30"
@@ -19,11 +19,11 @@
         />
         <h1 class="static font-bold ml-2">Tontun paja</h1>
       </nuxt-link>
-      <div class="flex ml-2 items-center space-x-4">
+      <div class="flex ml-2 justify-center items-center space-x-4">
         <div class="flex">
           <div
             name="hakukenttä"
-            class="render-fixed static w-[95%] md:block hidden"
+            class="render-fixed static w-[99%] md:block hidden"
           >
             <div
               class="flex items-center border-2 bg-[#A6CF98] border-[#557C55] rounded-md"
@@ -81,7 +81,7 @@
         </div>
       </div>
 
-      <div class="flex ml-2 items-center space-x-4">
+      <div class="flex justify-end max-w-[20%] items- space-x-4">
         <nuxt-link
           to="/cart"
           class="flex items-center border-r-[1px] border-r-black px-1 hover:text-[#557C55]"
