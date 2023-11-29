@@ -8,10 +8,7 @@
           class="rounded-lg object-fit"
           :src="currentImage"
         />
-        <div
-          v-if="images[0] !== ''"
-          class="flex items-center justify-center mt-2"
-        >
+        <div v-if="images.length > 0" class="flex items-center justify-center mt-2">
           <div v-for="image in images">
             <img
               @mouseover="currentImage = image"
@@ -40,7 +37,7 @@
 <script setup>
 import MainLayout from "~/layouts/MainLayout.vue";
 import { useUserStore } from "~/stores/user";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
@@ -51,10 +48,11 @@ const firestore = getFirestore();
 let product = ref(null);
 let currentImage = ref(null);
 let images = ref([]);
-
-const isInCart = computed(() => {
-  return userStore.cart.some((prod) => prod.id === route.params.id);
-});
+let id = ref([]);
+let description = ref([]);
+let price = ref([]);
+let isInCart = ref(false);
+let isAddingToCart = ref(false);
 
 async function fetchProduct() {
   const docRef = doc(firestore, "products", route.params.id);
@@ -64,6 +62,9 @@ async function fetchProduct() {
     product.value = docSnap.data();
     currentImage.value = product.value.url[0];
     images.value = product.value.url;
+    id.value = product.value.id;
+    description.value = product.value.description;
+    price.value = product.value.price;
   } else {
     console.log("No such product!");
   }
@@ -71,9 +72,26 @@ async function fetchProduct() {
 
 onMounted(() => {
   fetchProduct();
+
+  watch(() => userStore.cart, () => {
+    isInCart.value = userStore.cart.some((prod) => prod.id === id.value);
+  });
 });
 
 const addToCart = () => {
-  userStore.cart.push(product.value);
-};
+  if (isAddingToCart.value) {
+    return;
+  }
+    userStore.cart.push(product.value);
+
+    isInCart.value = true;
+
+    nextTick(() => {
+      setTimeout(() => {
+        isInCart.value = false;
+        isAddingToCart.value = false;
+      }, 3000);
+    });
+  };
 </script>
+
