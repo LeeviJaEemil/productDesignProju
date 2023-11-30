@@ -1,11 +1,8 @@
-<!--  -->
-
 <template>
   <div id="FooterMain" class="w-full bg-[#FA7070] py-6">
     <div class="mx-auto px-4">
       <!-- Mobiili Footer -->
       <div class="md:hidden">
-        <!-- Mobiilinäkymän sisältö: Osat allekkain -->
         <div class="mb-4 text-center">
           <div class="text-lg font-semibold text-[#282828] mb-2">About Us</div>
           <div class="text-[#282828] text-sm">Bla blaa blaa</div>
@@ -78,19 +75,31 @@
             </div>
             <div class="flex flex-col items-start gap-2">
               <a href="https://www.instagram.com" target="_blank" class="mr-2">
-                <Icon name="ri:instagram-fill" class="h-6 w-6" />
+                <Icon
+                  name="entypo-social:instagram-with-circle"
+                  class="h-6 w-6"
+                />
                 Instagram
               </a>
               <a href="https://www.twitter.com" target="_blank" class="mr-2">
-                <Icon name="ri:twitter-fill" class="h-6 w-6" />
+                <Icon
+                  name="entypo-social:twitter-with-circle"
+                  class="h-6 w-6"
+                />
                 Twitter
               </a>
               <a href="https://www.facebook.com" target="_blank" class="mr-2">
-                <Icon name="akar-icons:facebook-fill" class="h-6 w-6" />
+                <Icon
+                  name="entypo-social:facebook-with-circle"
+                  class="h-6 w-6"
+                />
                 Facebook
               </a>
               <a href="https://www.youtube.com" target="_blank">
-                <Icon name="akar-icons:youtube-fill" class="h-6 w-6" />
+                <Icon
+                  name="entypo-social:youtube-with-circle"
+                  class="h-6 w-6"
+                />
                 Youtube
               </a>
             </div>
@@ -100,7 +109,7 @@
         <div class="flex justify-center basis-1/3">
           <div class="text-center">
             <div class="text-lg font-semibold text-[#282828] mb-5">
-              Contact US
+              Contact Us
             </div>
             <div class="flex flex-col items-start gap-2">
               <a class="mr-2">
@@ -113,7 +122,7 @@
               </a>
               <a target="_blank" class="mr-2">
                 <Icon name="dashicons:email" alt="Email: " class="h-6 w-6" />
-                customer@service.com
+                customerservice@blööblöö.com
               </a>
             </div>
           </div>
