@@ -47,7 +47,7 @@
           <div class="flex items-center justify-between my-4">
             <div class="font-semibold">Total</div>
             <div class="text-2xl font-semibold">
-              $ <span class="font-extrabold">{{ totalPriceComputed }}</span>
+              <span class="font-extrabold">$ {{ totalPriceComputed }}</span>
             </div>
           </div>
           <button
@@ -87,7 +87,7 @@ const totalPriceComputed = computed(() => {
   userStore.cart.forEach((prod) => {
     price += prod.price;
   });
-  return price / 100;
+  return (price / 100).toFixed(2);
 });
 
 const selectedRadioFunc = (e) => {
