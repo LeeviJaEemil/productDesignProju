@@ -1,6 +1,6 @@
 <template>
   <MainLayout />
-  <div id="CheckoutPage" class="mt-4 max-w-[1200px] mx-auto px-2">
+  <div id="CheckoutPage" class="mt-4 min-h-screen max-w-[1200px] mx-auto px-2">
     <div class="md:flex gap-4 justify-between mx-auto w-full">
       <div class="md:w-[65%]">
         <div class="bg-[#A6CF98] rounded-lg p-4">
@@ -53,12 +53,6 @@
             </form>
           </div>
         </div>
-
-        <div id="Items" class="bg-[#A6CF98] rounded-lg p-4 mt-4">
-          <div v-for="product in userStore.checkout">
-            <CheckoutItem :product="product" />
-          </div>
-        </div>
       </div>
 
       <div class="md:hidden block my-4" />
@@ -71,7 +65,7 @@
           <div class="flex items-center justify-between my-4">
             <div class="font-semibold">Total</div>
             <div class="text-2xl font-semibold">
-              $ <span class="font-extrabold">{{ total / 100 }}</span>
+              <span class="font-extrabold"> $ {{ totalPriceComputed }}</span>
             </div>
           </div>
         </div>
@@ -165,6 +159,14 @@ const submit = async () => {
     return;
   }
 };
+
+const totalPriceComputed = computed(() => {
+  let price = 0;
+  userStore.cart.forEach((prod) => {
+    price += prod.price;
+  });
+  return (price / 100).toFixed(2);
+});
 
 /*onBeforeMount(async () => {
   if (userStore.checkout.length < 1) {
