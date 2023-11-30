@@ -1,6 +1,6 @@
 <template>
   <MainLayout />
-  <div id="ItemPage" class="mt-4 max-w-[1200px] mx-auto px-2">
+  <div id="ItemPage" class="mt-4 max-w-[1200px] mx-auto px-2 min-h-screen">
     <div class="md:flex gap-4 justify-between mx-auto w-full">
       <div class="md:w-[40%]">
         <img
@@ -20,6 +20,14 @@
             />
           </div>
         </div>
+
+        <div class="md:w-[60%] bg-[#A6CF98] p-3 rounded-lg" v-if="product">
+              <div>
+                <p class="mb-2">{{ product.title }}</p>
+                <p class="font-light text-[12px] mb-2">{{ product.description }}</p>
+                <p class="font-semibold text-lg">${{ (product.price / 100).toFixed(2) }}</p>
+              </div>
+            </div>
 
         <button
           @click="addToCart()"
@@ -44,15 +52,14 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 const userStore = useUserStore();
 const route = useRoute();
 const firestore = getFirestore();
+const products = ref([]);
 
 let product = ref(null);
 let currentImage = ref(null);
 let images = ref([]);
-let id = ref([]);
-let description = ref([]);
-let price = ref([]);
 let isInCart = ref(false);
 let isAddingToCart = ref(false);
+
 
 async function fetchProduct() {
   const docRef = doc(firestore, "products", route.params.id);
@@ -62,9 +69,6 @@ async function fetchProduct() {
     product.value = docSnap.data();
     currentImage.value = product.value.url[0];
     images.value = product.value.url;
-    id.value = product.value.id;
-    description.value = product.value.description;
-    price.value = product.value.price;
   } else {
     console.log("No such product!");
   }
@@ -76,6 +80,18 @@ onMounted(() => {
   watch(() => userStore.cart, () => {
     isInCart.value = userStore.cart.some((prod) => prod.id === id.value);
   });
+});
+
+onMounted(async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    products.value = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error fetching products: ", error);
+  }
 });
 
 const addToCart = () => {

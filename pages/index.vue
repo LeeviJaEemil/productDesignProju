@@ -1,6 +1,6 @@
 <template>
   <MainLayout />
-  <div id="IndexPage" class="bg-[#A6CF98] mx-auto px-2">
+  <div id="IndexPage" class="bg-[#A6CF98] px-2 min-h-screen">
     <div
       class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4"
     >
