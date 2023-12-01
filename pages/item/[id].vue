@@ -1,6 +1,6 @@
 <template>
   <MainLayout />
-  <div id="ItemPage" class="mt-4 min-h-screen max-w-[1200px] mx-auto px-2">
+  <div id="ItemPage" class="mt-4 max-w-[1200px] mx-auto px-2 min-h-screen">
     <div class="md:flex gap-4 justify-between mx-auto w-full">
       <div class="md:w-[40%]">
         <img
@@ -25,24 +25,25 @@
         </div>
       </div>
       <div
-        class="relative border-2 border-[#557C55] bg-[#f2ffe9] md:w-[50%] mb-3 mt-3"
+        class="relative md:w-[40%] bg-[#A6CF98] p-3 rounded-lg"
+        v-if="product"
       >
-        <div class="mt-2 ml-2">
-          <h1 class="text-xl font-bold">{{ title }}</h1>
-          <h2>{{ description }}</h2>
-          <div class="absolute bottom-0 mb-2">
-            <div class="text-lg font-bold">
-              Price: ${{ (price / 100).toFixed(2) }}
-            </div>
-            <button
-              @click="addToCart()"
-              :disabled="isInCart"
-              class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#557C55] to-[#A6CF98]"
-            >
-              <div v-if="isInCart">Is Added</div>
-              <div v-else>Add to Cart</div>
-            </button>
-          </div>
+        <p class="mb-2">{{ product.title }}</p>
+        <p class="relative font-light text-[12px] mb-2">
+          {{ product.description }}
+        </p>
+        <div class="absolute bottom-0 mb-3">
+          <p class="font-semibold text-lg">
+            ${{ (product.price / 100).toFixed(2) }}
+          </p>
+          <button
+            @click="addToCart()"
+            :disabled="isInCart"
+            class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#557C55] to-[#A6CF98]"
+          >
+            <div v-if="isInCart">Is Added</div>
+            <div v-else>Add to Cart</div>
+          </button>
         </div>
       </div>
     </div>
@@ -59,14 +60,11 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 const userStore = useUserStore();
 const route = useRoute();
 const firestore = getFirestore();
+const products = ref([]);
 
 let product = ref(null);
 let currentImage = ref(null);
 let images = ref([]);
-let id = ref([]);
-let title = ref([]);
-let description = ref([]);
-let price = ref([]);
 let isInCart = ref(false);
 let isAddingToCart = ref(false);
 
@@ -78,10 +76,6 @@ async function fetchProduct() {
     product.value = docSnap.data();
     currentImage.value = product.value.url[0];
     images.value = product.value.url;
-    title.value = product.value.title;
-    id.value = product.value.id;
-    description.value = product.value.description;
-    price.value = product.value.price;
   } else {
     console.log("No such product!");
   }
@@ -96,6 +90,18 @@ onMounted(() => {
       isInCart.value = userStore.cart.some((prod) => prod.id === id.value);
     }
   );
+});
+
+onMounted(async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    products.value = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error fetching products: ", error);
+  }
 });
 
 const addToCart = () => {
