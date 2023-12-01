@@ -8,7 +8,10 @@
           class="rounded-lg object-fit"
           :src="currentImage"
         />
-        <div v-if="images.length > 0" class="flex items-center justify-center mt-2">
+        <div
+          v-if="images.length > 0"
+          class="flex items-center justify-center mt-2"
+        >
           <div v-for="image in images">
             <img
               @mouseover="currentImage = image"
@@ -20,23 +23,28 @@
             />
           </div>
         </div>
-
-        <div class="md:w-[60%] bg-[#A6CF98] p-3 rounded-lg" v-if="product">
-              <div>
-                <p class="mb-2">{{ product.title }}</p>
-                <p class="font-light text-[12px] mb-2">{{ product.description }}</p>
-                <p class="font-semibold text-lg">${{ (product.price / 100).toFixed(2) }}</p>
-              </div>
-            </div>
-
-        <button
-          @click="addToCart()"
-          :disabled="isInCart"
-          class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#557C55] to-[#A6CF98]"
-        >
-          <div v-if="isInCart">Is Added</div>
-          <div v-else>Add to Cart</div>
-        </button>
+      </div>
+      <div
+        class="relative md:w-[40%] bg-[#A6CF98] p-3 rounded-lg"
+        v-if="product"
+      >
+        <p class="mb-2">{{ product.title }}</p>
+        <p class="relative font-light text-[12px] mb-2">
+          {{ product.description }}
+        </p>
+        <div class="absolute bottom-0 mb-3">
+          <p class="font-semibold text-lg">
+            ${{ (product.price / 100).toFixed(2) }}
+          </p>
+          <button
+            @click="addToCart()"
+            :disabled="isInCart"
+            class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#557C55] to-[#A6CF98]"
+          >
+            <div v-if="isInCart">Is Added</div>
+            <div v-else>Add to Cart</div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -60,7 +68,6 @@ let images = ref([]);
 let isInCart = ref(false);
 let isAddingToCart = ref(false);
 
-
 async function fetchProduct() {
   const docRef = doc(firestore, "products", route.params.id);
   const docSnap = await getDoc(docRef);
@@ -77,9 +84,12 @@ async function fetchProduct() {
 onMounted(() => {
   fetchProduct();
 
-  watch(() => userStore.cart, () => {
-    isInCart.value = userStore.cart.some((prod) => prod.id === id.value);
-  });
+  watch(
+    () => userStore.cart,
+    () => {
+      isInCart.value = userStore.cart.some((prod) => prod.id === id.value);
+    }
+  );
 });
 
 onMounted(async () => {
@@ -98,16 +108,15 @@ const addToCart = () => {
   if (isAddingToCart.value) {
     return;
   }
-    userStore.cart.push(product.value);
+  userStore.cart.push(product.value);
 
-    isInCart.value = true;
+  isInCart.value = true;
 
-    nextTick(() => {
-      setTimeout(() => {
-        isInCart.value = false;
-        isAddingToCart.value = false;
-      }, 3000);
-    });
-  };
+  nextTick(() => {
+    setTimeout(() => {
+      isInCart.value = false;
+      isAddingToCart.value = false;
+    }, 3000);
+  });
+};
 </script>
-
