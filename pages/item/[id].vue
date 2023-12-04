@@ -32,19 +32,18 @@
         <p class="relative font-light text-[12px] mb-2">
           {{ product.description }}
         </p>
-        <div class="absolute bottom-0 mb-3">
-          <p class="font-semibold text-lg">
-            ${{ (product.price / 100).toFixed(2) }}
-          </p>
-          <button
-            @click="addToCart()"
-            :disabled="isInCart"
-            class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#557C55] to-[#A6CF98]"
-          >
-            <div v-if="isInCart">Is Added</div>
-            <div v-else>Add to Cart</div>
-          </button>
-        </div>
+        <div class="absolute bottom-0 mb-3"></div>
+        <p class="font-semibold text-lg">
+          ${{ (product.price / 100).toFixed(2) }}
+        </p>
+        <button
+          @click="addToCart()"
+          :disabled="isInCart"
+          class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-[#557C55] to-[#A6CF98]"
+        >
+          <div v-if="isInCart">Is Added</div>
+          <div v-else>Add to Cart</div>
+        </button>
       </div>
     </div>
   </div>
