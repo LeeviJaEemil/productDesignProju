@@ -26,7 +26,7 @@
       </div>
     </div>
     <div v-else class="text-center text-xl font-medium">
-      Ei tuotteita, jotka vastaavat hakuehtoja.
+      Ei tuotteita jotka vastaavat hakuehtoja.
     </div>
   </div>
 </template>
