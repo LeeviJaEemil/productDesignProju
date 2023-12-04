@@ -154,6 +154,12 @@ const register = async () => {
   confirmPasswordClass.value = "border border-gray-300";
   userCreated.value = "";
 
+  if (!registerEmail.value) {
+    emailError.value = "Give your email";
+    emailClass.value = "border border-red-500";
+    return;
+  }
+
   if (!registerPassword.value) {
     passwordError.value = "Give a password";
     passwordClass.value = "border border-red-500";
@@ -168,7 +174,6 @@ const register = async () => {
   }
 
   if (registerPassword.value !== confirmPassword.value) {
-    passwordError.value = "Passwords do not match";
     confirmPasswordError.value = "Passwords do not match";
     passwordClass.value = "border border-red-500";
     confirmPasswordClass.value = "border border-red-500";
