@@ -24,10 +24,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="relative md:w-[40%] bg-[#A6CF98] p-3 rounded-lg"
-        v-if="product"
-      >
+      <div class="md:w-[40%] bg-[#A6CF98] p-3 rounded-lg" v-if="product">
         <p class="mb-2">{{ product.title }}</p>
         <p class="relative font-light text-[12px] mb-2">
           {{ product.description }}
