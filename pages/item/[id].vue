@@ -104,7 +104,11 @@ const addToCart = () => {
   if (isAddingToCart.value) {
     return;
   }
-  userStore.cart.push(product.value);
+  const productWithId = {
+    ...product.value,
+    cartItemID: Math.random().toString(36).substr(2, 9),
+  };
+  userStore.cart.push(productWithId);
 
   isInCart.value = true;
 
