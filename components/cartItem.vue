@@ -23,7 +23,7 @@
 
       <div class="flex items-center justify-end">
         <button
-          @click="removeFromCart()"
+          @click="removeFromCart(product.cartItemID)"
           class="sm:hidden block -mt-0.5 hover:text-red-500"
         >
           <Icon name="material-symbols:delete-outline" size="20" />
